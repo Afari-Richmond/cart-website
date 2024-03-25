@@ -34,7 +34,8 @@ class Products {
             products = products.map(item =>{
                 const {title,price} = item.fields;
                 const {id} = item.sys;
-                const { image} = item.fields.image.fields.file.url;
+                const { url: image } = item.fields.image.fields.file;
+
 
 
 
@@ -51,8 +52,26 @@ class Products {
 
 //display products
 
-class DisplayProducts {
-    //get products from the json file
+class UI {
+    displayProducts(products){
+        console.log(products);
+        let result = ""
+        products.forEach(products => {
+            result += `
+            <article class="product">
+                <div class="img-container">
+                    <img src=${products.image} alt="" class="product-img">
+                    <button class="bag-btn" data-id=${products.id}><i class="fas fas-shopping-cart"></i>
+                    add to bag</button>
+                </div>
+                <h3>${products.title}</h3>
+                <h4>$${products.price}</h4>
+            </article>
+            
+            `;
+        });
+        productsDOM.innerHTML = result;
+            }
    
 
 }
@@ -60,6 +79,7 @@ class DisplayProducts {
 //local storage 
 
 class storage {
+ 
 
 }
 
@@ -68,8 +88,8 @@ class storage {
 document.addEventListener("DOMContentLoaded", ()=>{
 //create an instance of products and Display products calss
 const products = new Products();
-const display = new DisplayProducts();
+const display = new UI();
 
-products.getProducts().then(data => console.log(data) );
+products.getProducts().then(products => display.displayProducts(products) );
 
-})
+});
