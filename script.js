@@ -61,7 +61,7 @@ class UI {
             <article class="product">
                 <div class="img-container">
                     <img src=${products.image} alt="" class="product-img">
-                    <button class="bag-btn" data-id=${products.id}><i class="fas fas-shopping-cart"></i>
+                    <button class="bag-btn" data-id=${products.id}><i class="fa fas-shopping-cart"></i>
                     add to bag</button>
                 </div>
                 <h3>${products.title}</h3>
@@ -72,13 +72,21 @@ class UI {
         });
         productsDOM.innerHTML = result;
             }
+
+            getBagButtons(){
+                const buttons = [...document.querySelectorAll(".bag-btn")];
+                console.log(buttons);
+            }
    
 
 }
 
 //local storage 
 
-class storage {
+class Storage {
+    static saveProducts(products){
+        localStorage.setItem("products", JSON.stringify(products))
+    }
  
 
 }
@@ -86,10 +94,14 @@ class storage {
 
 //when the page loads
 document.addEventListener("DOMContentLoaded", ()=>{
-//create an instance of products and Display products calss
+//create an instance of products and Display products class
 const products = new Products();
 const display = new UI();
 
-products.getProducts().then(products => display.displayProducts(products) );
+products.getProducts().then(products => {display.displayProducts(products); 
+Storage.saveProducts(products);
+}).then( () => {
+    display.getBagButtons();
+});
 
 });
