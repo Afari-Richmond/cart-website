@@ -1,5 +1,4 @@
 //declaring all variables to be used
-
 const cartBtn = document.querySelector('.cart-btn');
 const CloseCartBtn = document.querySelector('.close-cart');
 const ClearCartBtn = document.querySelector('clear-cart');
@@ -10,12 +9,9 @@ const cartTotal = document.querySelector('cart-total');
 const cartContent = document.querySelector('cart-content');
 const productsDOM = document.querySelector('.products-center');
 
-
-
 //cart
 
 let cart = [];
-
 //products
 class Products {
     async getProducts(){
@@ -35,9 +31,6 @@ class Products {
                 const {title,price} = item.fields;
                 const {id} = item.sys;
                 const { url: image } = item.fields.image.fields.file;
-
-
-
 
                 //return the extracted data into an object
                 return {title,price,id,image}
@@ -76,6 +69,19 @@ class UI {
             getBagButtons(){
                 const buttons = [...document.querySelectorAll(".bag-btn")];
                 console.log(buttons);
+                buttons.forEach(button => {
+                    let id = button.dataset.id;
+                    let inCart = cart.find( item => item.id === id);
+                    if (inCart) {
+                        button.innerText = "In Cart";
+                        button.disabled = true;
+                    } else{
+                        button.addEventListener('click',(event) =>{
+                            event.target.innerText = "In Cart"
+                            event.target.disabled = true
+                        })
+                    }
+                })
             }
    
 
